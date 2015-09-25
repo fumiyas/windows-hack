@@ -1,13 +1,17 @@
-net stop wuauserv
+sc query wuauserv | findstr /I /C:"STOPPED"
+if %errorlevel% NEQ 0 (
+  net stop wuauserv
+  if ERRORLEVEL 1 goto END
+)
 
 cd %systemroot%
 if ERRORLEVEL 1 goto END
 
-if Exist SoftwareDistribution.old (
+if EXIST SoftwareDistribution.old (
   rmdir /S /Q SoftwareDistribution.old
   if ERRORLEVEL 1 goto END
 )
-if Exist SoftwareDistribution (
+if EXIST SoftwareDistribution (
   ren SoftwareDistribution SoftwareDistribution.old
   if ERRORLEVEL 1 goto END
 )
@@ -15,20 +19,28 @@ if Exist SoftwareDistribution (
 net start wuauserv
 if ERRORLEVEL 1 goto END
 
-net stop bits
+sc query bits | findstr /I /C:"STOPPED"
+if %errorlevel% NEQ 0 (
+  net stop bits
+  if ERRORLEVEL 1 goto END
+)
 net start bits
 if ERRORLEVEL 1 goto END
 
-net stop cryptsvc
+sc query cryptsvc | findstr /I /C:"STOPPED"
+if %errorlevel% NEQ 0 (
+  net stop cryptsvc
+  if ERRORLEVEL 1 goto END
+)
 
 cd %systemroot%\system32
 if ERRORLEVEL 1 goto END
 
-if Exist catroot2.old (
+if EXIST catroot2.old (
   rmdir /S /Q catroot2.old
   if ERRORLEVEL 1 goto END
 )
-if Exist catroot2 (
+if EXIST catroot2 (
   ren catroot2 catroot2.old
   if ERRORLEVEL 1 goto END
 )
@@ -37,3 +49,4 @@ net start cryptsvc
 if ERRORLEVEL 1 goto END
 
 :END
+
