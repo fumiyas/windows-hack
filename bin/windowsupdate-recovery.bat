@@ -1,3 +1,6 @@
+rem DOS Script to Reset Windows Update Agent
+rem https://gallery.technet.microsoft.com/scriptcenter/Dos-Command-Line-Batch-to-fb07b159/view/
+
 sc query wuauserv | findstr /I /C:"STOPPED"
 if %errorlevel% NEQ 0 (
   net stop wuauserv
