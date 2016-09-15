@@ -53,3 +53,4 @@ if ERRORLEVEL 1 goto END
 
 :END
 
+PAUSE
